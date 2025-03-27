@@ -1,0 +1,49 @@
+{% extends 'network/layout.html' %}
+
+{% block body %}
+    
+    <div style="overflow: hidden">
+        <div style="float: left">
+            {% for data in info %}
+            <img  src="{{ data.profile_img }}" style="width: 200px; height: 200px; margin-left: 100px; margin-top: 100px; border: 5px solid green; border-radius: 30px">
+            <form action="run" method="post">
+            <button class="btn btn-primary" style="margin-left: 100px; margin-top: 20px" type="submit">{{ response }}</button>
+            <p style="font-family: sans-serif; margin-left: 100px; margin-top: 10px; font-size: 30px; color: purple">Following</p> 
+            {% for username in wow %}
+                    <li style="font-family: sans-serif; margin-left: 100px; margin-top: 10px">{{username}}</li>
+                    {% empty %}
+                    <p style="font-family: sans-serif; margin-left: 100px; margin-top: 10px">No one</p>
+            {% endfor %}
+            <h3 type="hidden" style="margin-left: 100px; visibility: hidden ">User Name <input type="hidden" name="post_name" style="font-weight: bold; margin-left: 100px; " value="{{data.user}}"/></h3>
+            {% csrf_token %}
+            <h3 style="margin-left: 100px; margin-top:  ">User Name <h2 style="font-weight: bold; margin-left: 100px; ">{{data.user}}</h2></h3>
+            <h6 style="margin-left: 100px;">Bio: <p style="font-family: sans-serif">{{ data.bio }}</p></h6>
+            </form>
+            {% endfor %}
+        </div>
+        <div style="float: right; margin-top: 50px">
+                <h3 style="font-family: sans-serif; margin-left: 100px; margin-top: 20px">User's Post</h3>
+                
+                {% for post in posts %}
+                    <div class="post_box">
+                        <form action="{% url 'profile' %}" method="post">
+                            {% csrf_token %}
+                            <input name="post_name" type="hidden" value="{{ post.user }}"/>
+                            <button type="submit">{{ post.user }}</button>
+                        </form>
+                        <a class="user"> {{ post.time }}</a>
+                        <h6 class="content">{{ post.post }}</h6>
+                        
+                        <form action="{% url 'info' %}" method="post">
+                            {% csrf_token %}
+                            <a><img style="height: 15px; width: 15px" src="https://clipart.info/images/ccovers/1516250282red-heart-emoji.png"/>:{{ post.likes_no }}</a>
+                            <a type="submit"><img style="height: 15px; width: 15px" src="https://th.bing.com/th/id/OIP.SFHv5WeDbjXdeKOqdanTIQHaHa?rs=1&pid=ImgDetMain"/>:{{ post.comments }}</a>
+                            <button class="btn btn-primary" name="id" style="margin-bottom: 3px; padding: 3px;" value="{{ post.post_id }}">View</button>
+                        </form>
+                    </div>
+                {% endfor %}
+                
+        </div>
+    </div>
+
+{% endblock%}

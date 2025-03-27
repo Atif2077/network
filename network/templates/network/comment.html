@@ -1,0 +1,34 @@
+{% extends "network/layout.html" %}
+
+{% block body %}
+    {% for post in posts %}
+        <div class="page_box">
+            <input name="post_id" type="hidden" value="{{ post.post_id }}"/>
+            <a class="user">{{ post.user }}</a>
+            <a class="user"> {{ post.time }}</a>
+            <h6 class="content">{{ post.post }}</h6>
+            <form action="{% url 'likes' %}" method="post">
+                {% csrf_token %}
+                <a><img style="height: 15px; width: 15px" src="https://clipart.info/images/ccovers/1516250282red-heart-emoji.png"/>:{{ post.likes_no }}</a>
+                <input type="image" src="https://www.pinclipart.com/picdir/big/294-2944451_like-button-youtube-png-clipart.png" style="height: 15px; width: 15px" alt="Submit" />
+            </form>
+        </div>
+    {% endfor %}
+    <form action="/{{ comment }}" method="post">
+        {% csrf_token %}
+        <div class="comment_box">
+            <a default="{{ user.username }}" type="hidden">
+            <input id="comment" name="comment" placeholder="What do you think about this post!" type="text">
+        </div>
+        <input class="btn btn-primary" type="submit" value="Add Comment" style="margin-left: 18%; margin-top: 27px"> 
+        
+    </form>
+    <h2 class="comment_heading">
+        Comments:
+    </h2>
+    <hr>
+    {% for comment in comments %}
+                <h6 style="font-family: san serif; margin-left: 100px; margin-bottom: 8px "><a style="color: purple">{{comment.user}}:{{comment.time}}</a> :: {{ comment.comments}}</h6>
+    {% endfor %}
+
+{% endblock %}

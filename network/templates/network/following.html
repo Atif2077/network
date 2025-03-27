@@ -1,0 +1,25 @@
+{% extends "network/layout.html" %}
+
+{% block body %}
+    <div>
+        <h3 style="font-size: 40px; margin-left: 30px; margin-bottom: 30px;">Posts from users you are following:</h3>
+        
+        {% for post in posts %}
+            <div class="post_box">
+                <a class="user">{{ post.user }}</a>
+                <a class="user"> {{ post.time }}</a>
+                <h6 class="content">{{ post.post }}</h6>
+                
+                <form action="{% url 'info' %}" method="post">
+                    {% csrf_token %}
+                    <a><img style="height: 15px; width: 15px" src="https://clipart.info/images/ccovers/1516250282red-heart-emoji.png"/>:{{ post.likes_no }}</a>
+                    <a type="submit"><img style="height: 15px; width: 15px" src="https://th.bing.com/th/id/OIP.SFHv5WeDbjXdeKOqdanTIQHaHa?rs=1&pid=ImgDetMain"/>:{{ post.comments }}</a>
+                    <button class="btn btn-primary" name="id" style="margin-bottom: 3px; padding: 3px;" value="{{ post.post_id }}">View</button>
+                </form>
+            </div>
+        {% endfor %}
+        <div style=" display: flex; justify-content: center; align-item: center">
+            <div style="justify-content: center; align-item: center">{% include "network/pagination.html" %}</div>
+        </div>        
+    </div>
+{% endblock %}

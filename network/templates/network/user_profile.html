@@ -1,0 +1,55 @@
+{% extends 'network/layout.html' %}
+
+{% block body %}
+    <div>
+        <h3 style="font-family: sans-serif; margin-left: 100px; margin-top: 20px">This is your profile</h3>
+    </div>
+    
+    <div style="overflow: hidden">
+        <div style="float: left">
+            {% for data in info %}
+            <img  src="{{ data.profile_img }}" style="width: 200px; height: 200px; margin-left: 100px; margin-top: 100px; border: 5px solid green; border-radius: 30px">
+            <h3 style="margin-left: 100px; margin-top: 100px; ">User Name <h2 style="font-weight: bold; margin-left: 100px; ">{{user.username}}</h2></h3>
+            <p style="font-family: sans-serif; margin-left: 100px; margin-top: 10px; font-size: 30px; color: purple">Following</p> 
+            {% for username in wow %}
+                    <li style="font-family: sans-serif; margin-left: 100px; margin-top: 10px">{{username}}</li>
+            {% endfor %}
+            <h6 style="margin-left: 100px;">Bio: <p style="font-family: sans-serif">{{ data.bio }}</p></h6>
+            {% endfor %}
+        </div>
+        <div style="float: right">
+            <form action="{% url 'user_profile' %}" method="post">
+                {% csrf_token %}
+                <div class style="margin-top: 25%;">
+                    <a default="{{ user.username }}" type="hidden">
+                    <textarea class="bio_box" name="bio" placeholder="Enter your bio here" type="text" rows="6" columns="50"></textarea>
+                    <input class="update" name="profile_img" placeholder="Paste your profile image here" type="text">
+                    <input class="btn btn-primary" type="submit" value="Update" style="margin-right: 30%; margin-top: 20px">
+                </div>
+            </form>
+        </div>
+        <div style="float: right; margin-left: 100px" >
+            <h3 style="font-family: sans-serif; margin-left: 100px; margin-top: 20px">Your posts:</h3>
+            
+            {% for post in posts %}
+                <div class="post_box">
+                    <a class="user">{{ post.user }}</a>
+                    <a class="user"> {{ post.time }}</a>
+                    <form action="{% url 'edit' %}" method="post">
+                        {% csrf_token %}
+                        <textarea name="edit" id="comment" value="{{ post.post }}" rows="5" columns="5" style="padding: 3px" >{{ post.post }}</textarea>
+                        <button name="id" value="{{post.post_id}}" type="submit" class="btn btn-primary">save</button>
+                    </form>
+                    
+                    <form action="{% url 'info' %}" method="post">
+                        {% csrf_token %}
+                        <a><img style="height: 15px; width: 15px" src="https://clipart.info/images/ccovers/1516250282red-heart-emoji.png"/>:{{ post.likes_no }}</a>
+                        <a type="submit"><img style="height: 15px; width: 15px" src="https://th.bing.com/th/id/OIP.SFHv5WeDbjXdeKOqdanTIQHaHa?rs=1&pid=ImgDetMain"/>:{{ post.comments }}</a>
+                        <button class="btn btn-primary" name="id" style="margin-bottom: 3px; padding: 3px;" value="{{ post.post_id }}">View</button>
+                    </form>
+                </div>
+            {% endfor %}        
+        </div>
+    </div>
+
+{% endblock%}
