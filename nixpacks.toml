@@ -1,0 +1,12 @@
+[phases.setup]
+nixPkgs = ["python39", "postgresql_16", "gcc"]
+
+[phases.install]
+commands = [
+    "python -m venv /opt/venv",
+    ". /opt/venv/bin/activate",
+    "pip install -r requirements.txt"
+]
+
+[start]
+command = "python manage.py migrate && gunicorn project4.wsgi"
