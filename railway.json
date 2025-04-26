@@ -1,6 +1,14 @@
 {
-  "build": {
-    "builder": "python",
-    "disableNixpacks": true
-  }
+  "builds": [
+    {
+      "src": "requirements.txt",
+      "use": "@railway/python"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/.*",
+      "dest": "wsgi.py"
+    }
+  ]
 }
